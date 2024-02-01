@@ -7,8 +7,11 @@ import Marker from "@editorjs/marker";
 import InlineCode from "@editorjs/inline-code";
 import { uploadImage } from "../common/aws";
 
+type Props = {
+    image: File;
+};
 
-const uploadImageByFile = async (e: unknown) => {
+const uploadImageByFile = async (e: Props) => {
     const url = await uploadImage(e);    
     if (url) {
         return {
@@ -35,7 +38,7 @@ const uploadImageByURL = async (e: unknown) => {
 };
 
 export const tools = {
-    embed: Embed,
+    embed: Embed as unknown,
     link: {
         class: List,
         inlineToolbar: true,
