@@ -1,0 +1,21 @@
+# Node.js
+node_modules/
+.env
+
+# TypeScript
+*.js
+*.map
+*.tsbuildinfo
+
+# IDEs and editors
+.vscode/
+.idea/
+
+# Logs
+logs/
+*.log
+
+# Dependency directories
+pids/
+logs/
+results/
