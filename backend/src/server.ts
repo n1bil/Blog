@@ -3,10 +3,10 @@ import morgan from "morgan";
 import mongoose from "mongoose";
 import cors from "cors";
 import { config } from "dotenv";
-import userRoutes from "./src/router/userRouter";
-import postRoutes from "./src/router/postRouter";
-import commentRoutes from "./src/router/commentRouter";
-import notificationRoutes from "./src/router/notificationRouter";
+import userRoutes from "./router/userRouter";
+import postRoutes from "./router/postRouter";
+import commentRoutes from "./router/commentRouter";
+import notificationRoutes from "./router/notificationRouter";
 
 
 
