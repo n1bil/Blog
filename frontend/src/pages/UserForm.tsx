@@ -19,9 +19,8 @@ type FormFields = {
 };
 
 export const UserForm = (props: Props) => {
-    
     const { userAuth: {access_token}, setUserAuth } = useContext(UserContext);
-    
+    const formElement = document.getElementById("formElement") as HTMLFormElement;
 
     const userAuthThroughServer = async (serverRoute: string, formData: FormFields) => {
         try {
