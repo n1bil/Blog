@@ -66,9 +66,9 @@ export const ManagePublishedPostCard = ({ post }: Props) => {
                     return null;
                 }
 
-                console.log({ ...preVal, totalDocs: totalDocs - 1, deleteDocCount: newDeletedDocCount  + 1 });
+                console.log({ ...preVal, totalDocs: totalDocs - 1, deleteDocCount: newDeletedDocCount!  + 1 });
                 
-                return { ...preVal, totalDocs: totalDocs - 1, deleteDocCount: newDeletedDocCount  + 1 }
+                return { ...preVal, totalDocs: totalDocs - 1, deleteDocCount: newDeletedDocCount!  + 1 }
             });
         } catch (error) {
             console.log(error);

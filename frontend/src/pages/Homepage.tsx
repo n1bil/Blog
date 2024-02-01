@@ -1,5 +1,5 @@
 import axios from "axios";
-import {InPageNavigation, activeTabRef} from "../components/homepage_components/InPageNavigation";
+import {InPageNavigation} from "../components/homepage_components/InPageNavigation";
 import { WrapperUserForm } from "../components/auxiliary_components/WrapperUserForm";
 import { useEffect, useState } from "react";
 import Loader from "../components/auxiliary_components/Loader";
@@ -9,13 +9,15 @@ import { TrendPost } from "../components/homepage_components/TrendPost";
 import { NoDataMessage } from "../components/homepage_components/NoDataMessage";
 import {filterPaginationData, filterPaginationDataByCategory} from "../common/filter_pagination";
 import { LoadMoreDataBtn } from "../components/homepage_components/LoadMoreData";
+import { useInPageNavigationRefs } from "../common/InPageNavigationRefs";
+
 
 export const Homepage = () => {
     const [posts, setPosts] = useState<LastPostsResult>();
     const [trendingPosts, setTrendingPosts] = useState<TrendPosts[]>();
     const [pageState, setPageState] = useState("home");
     const categories = ["programming", "movie", "sport", "social media", "cooking", "tech", "history", "travel"];
-    // const page = 1;
+    const { activeTabRef } = useInPageNavigationRefs();
 
     const fetchLatestPosts = async (page: number) => {
         try {

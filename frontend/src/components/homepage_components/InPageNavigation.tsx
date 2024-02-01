@@ -1,4 +1,5 @@
-import { ReactNode, SetStateAction, useEffect, useRef, useState } from "react";
+import { ReactNode, SetStateAction, useEffect, useState } from "react";
+import { useInPageNavigationRefs } from "../../common/InPageNavigationRefs";
 
 type Props = {
     routes: string[];
@@ -7,12 +8,15 @@ type Props = {
     children?: ReactNode;
 };
 
-export let activeTabLineRef;
-export let activeTabRef;
+// eslint-disable-next-line react-refresh/only-export-components, react-hooks/rules-of-hooks
+// export let activeTabLineRef = useRef<HTMLHRElement | null>(null);
+// eslint-disable-next-line react-refresh/only-export-components, react-hooks/rules-of-hooks
+// export let activeTabRef = useRef<HTMLButtonElement | null>(null);
+
+
 
 export const InPageNavigation = ({routes, defaultHidden = [], defaultActiveIndex = 0, children}: Props) => {
-    activeTabLineRef = useRef<HTMLHRElement | null>(null);
-    activeTabRef = useRef<HTMLButtonElement | null>(null);
+    const { activeTabLineRef, activeTabRef } = useInPageNavigationRefs();
     const [inPageNavIndex, setInPageNavIndex] = useState(defaultActiveIndex);
     const [isResizeEventAdded, setIsResizeEventAdded] = useState(false);
     const [width, setWidth] = useState(window.innerWidth);
@@ -20,15 +24,20 @@ export const InPageNavigation = ({routes, defaultHidden = [], defaultActiveIndex
     const changePageState = (btn: HTMLButtonElement, index: SetStateAction<number>) => {
         const { offsetWidth, offsetLeft } = btn;
     
-        activeTabLineRef.current!.style.width = offsetWidth + "px";
-        activeTabLineRef.current!.style.left = offsetLeft + "px";
+        const lineRef = activeTabLineRef as React.MutableRefObject<HTMLHRElement | null>;
+
+    if (lineRef.current) {
+        lineRef.current.style.width = offsetWidth + "px";
+        lineRef.current.style.left = offsetLeft + "px";
+    }
     
         setInPageNavIndex(index);
     };
 
     useEffect(() => {
         if (width > 766 && inPageNavIndex != defaultActiveIndex) {
-            changePageState(activeTabRef.current, defaultActiveIndex);
+            const tabRef = activeTabRef as React.MutableRefObject<HTMLButtonElement | null>;
+            changePageState(tabRef.current!, defaultActiveIndex);
         }  
 
         if (!isResizeEventAdded) {
