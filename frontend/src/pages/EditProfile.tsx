@@ -76,16 +76,17 @@ export const EditProfile = () => {
                         setUserAuth(newUserAuth);
 
                         setUpdatedProfileImg(null);
-                        toast.success("Uploaded");
                     }
                 } catch (error) {
-                    console.log(error);
-                    if (error instanceof Error) {
-                        toast.error(error.message);
+                    if (axios.isAxiosError(error) && error.response?.data?.error) {
+                        toast.error(error.response.data.error);
+                    } else {
+                        toast.error("An unknown error occurred");
                     }
                 } finally {
-                    buttonElement.removeAttribute("disabled");
                     toast.dismiss(loadingToast);
+                    buttonElement.removeAttribute("disabled");
+                    toast.success("Uploaded");
                 }
             }
         }
@@ -104,7 +105,6 @@ export const EditProfile = () => {
                 form.forEach((value, key) => {
                     formData[key] = value as string | File;
                 });
-    
                 const { username, bio, youtube, facebook, twitter, github, instagram, website } = formData;
     
                 if (typeof username === "string" && username.length < 3) {
@@ -117,7 +117,6 @@ export const EditProfile = () => {
     
                 loadingToast = toast.loading("Updating...");
                 event.currentTarget.setAttribute("disabled", "true");
-    
                 const response = await axios.put(`${import.meta.env.VITE_API_URL}/update-profile`,
                     {
                         username,
@@ -128,25 +127,26 @@ export const EditProfile = () => {
                 );
     
                 const { data } = response;
-    
                 if (data.updatedUsername && userAuth.username !== data.updatedUsername) {
                     const newUserAuth = { ...userAuth, username: data.updatedUsername };
                     storeInSession("user", JSON.stringify(newUserAuth));
                     setUserAuth(newUserAuth);
                 }
-    
-                toast.dismiss(loadingToast);
-                event.currentTarget.removeAttribute("disabled");
+                
+                toast.dismiss(loadingToast);                
                 toast.success("Profile updated");
             }
         } catch (error) {
-            console.error(error);
             toast.dismiss(loadingToast);
-            event.currentTarget.removeAttribute("disabled");
+            console.log("1");
             if (axios.isAxiosError(error) && error.response?.data?.error) {
                 toast.error(error.response.data.error);
             } else {
                 toast.error("An unknown error occurred");
+            }
+        } finally {
+            if (event.currentTarget) {
+                event.currentTarget.removeAttribute("disabled");
             }
         }
     };
@@ -263,7 +263,7 @@ export const EditProfile = () => {
                             <button 
                                 className="btn-dark w-auto px-10"
                                 type="submit"   
-                                onClick={handleSubmit}
+                                onClick={(event) => handleSubmit(event as unknown as React.FormEvent<HTMLFormElement>)}
                             >
                                 Update
                             </button>
