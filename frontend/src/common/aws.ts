@@ -6,7 +6,7 @@ type Props = {
 
 export const uploadImage = async ({ image }: Props) => {
     try {
-        const { data: { uploadURL } } = await axios.get("http://localhost:3000/get-upload-url");
+        const { data: { uploadURL } } = await axios.get(import.meta.env.VITE_API_URL + "/get-upload-url");
         await axios.put(uploadURL, image, {
             headers: { 'Content-Type': 'image/jpeg' }
         });
