@@ -15,7 +15,7 @@ config();
 
 const port = process.env.PORT;
 server.use(morgan("dev"));
-server.use(cors({ credentials: true, origin: ["http://localhost:5173"] }));
+server.use(cors({ credentials: true, origin: ["https://quill-hub-client.vercel.app"] }));
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 
