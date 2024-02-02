@@ -11,8 +11,6 @@ node_modules
 dist
 dist-ssr
 *.local
-public
-src/assets
 .env
 
 # Editor directories and files
