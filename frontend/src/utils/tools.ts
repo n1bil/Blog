@@ -6,6 +6,7 @@ import Quote from "@editorjs/quote";
 import Marker from "@editorjs/marker";
 import InlineCode from "@editorjs/inline-code";
 import { uploadImage } from "../common/aws";
+import { ToolConstructable, ToolSettings } from "@editorjs/editorjs";
 
 type Props = {
     image: File;
@@ -37,14 +38,14 @@ const uploadImageByURL = async (e: unknown) => {
     };
 };
 
-export const tools = {
-    embed: Embed as unknown,
+export const tools: Record<string, ToolConstructable | ToolSettings> = {
+    embed: Embed as ToolConstructable,
     link: {
-        class: List,
+        class: List as ToolConstructable,
         inlineToolbar: true,
     },
     image: {
-        class: Image,
+        class: Image as ToolConstructable,
         config: {
             uploader: {
                 uploadByUrl: uploadImageByURL,
@@ -53,17 +54,17 @@ export const tools = {
         },
     },
     header: {
-        class: Header,
+        class: Header as ToolConstructable,
         config: {
             placeholder: "Type Heading...",
             levels: [2, 3],
-            defaultLevel: 2
-        }
+            defaultLevel: 2,
+        },
     },
     quote: {
-        class: Quote,
+        class: Quote as ToolConstructable,
         inlineToolbar: true,
     },
-    marker: Marker,
-    inlineCode: InlineCode,
+    marker: Marker as ToolConstructable,
+    inlineCode: InlineCode as ToolConstructable,
 };
