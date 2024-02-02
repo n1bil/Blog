@@ -1,7 +1,7 @@
 import { InputBox } from "../components/userform_components/InputBox";
 import { Link, Navigate } from "react-router-dom";
 import { WrapperUserForm } from "../components/auxiliary_components/WrapperUserForm";
-import { SyntheticEvent, useContext } from "react";
+import { SyntheticEvent, useContext, useRef } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import axios from "axios";
 import { storeInSession } from "../common/session";
@@ -20,7 +20,7 @@ type FormFields = {
 
 export const UserForm = (props: Props) => {
     const { userAuth: {access_token}, setUserAuth } = useContext(UserContext);
-    const formElement = document.getElementById("formElement") as HTMLFormElement;
+    const formRef = useRef<HTMLFormElement>(null);
 
     const userAuthThroughServer = async (serverRoute: string, formData: FormFields) => {
         try {
@@ -40,7 +40,12 @@ export const UserForm = (props: Props) => {
 
     const handleSubmit = (event: SyntheticEvent) => {
         event.preventDefault();
+        const formElement = formRef.current;
 
+        if (!formElement) {
+            console.error("Form element not found");
+            return;
+        }
         const serverRoute = props.type == "sign-in" ? "/signin" : "/signup";
 
         const form = new FormData(formElement);
@@ -92,7 +97,7 @@ export const UserForm = (props: Props) => {
         <WrapperUserForm keyValue={props.type}>
             <section className="h-cover flex items-center justify-center">
             <Toaster />
-            <form id="formElement" className="w-[80%] max-w-[400px] flex flex-col items-center">
+            <form ref={formRef} id="formElement" className="w-[80%] max-w-[400px] flex flex-col items-center">
                 <h1 className="text-4xl font-gelasio capitalize text-center mb-24">
                     {props.type == "sign-in" ? "Back in action" : "Become a Member"}
                 </h1>
